@@ -60,7 +60,7 @@ export default function PostsShow({ publication, post }: { publication: Publicat
 
               <hr className="border-neutral-300 w-full mt-4" />
             </header>
-            <div className="mt-4" dangerouslySetInnerHTML={{ __html: post.html }} />
+            <div className="mt-4 prose" dangerouslySetInnerHTML={{ __html: post.html }} />
           </div>
 
           <SubscribeToNewsletter

@@ -1,11 +1,25 @@
 import { MarketingLayout } from '~/components/marketing-layout/marketing-layout'
 import { TriangleAlert } from 'lucide-react'
-import { Link } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import { GitHubIcon } from '~/components/icons'
 
 export default function Product() {
   return (
     <MarketingLayout>
+      <Head>
+        <title>Panache</title>
+        <meta
+          name="description"
+          content="An open-source newsletter platform, designed for creators."
+        />
+
+        <meta property="og:title" content="Panache" />
+        <meta
+          property="og:description"
+          content="An open-source newsletter platform, designed for creators."
+        />
+      </Head>
+
       <section className="flex flex-col items-center justify-center gap-4 max-w-md mx-auto">
         <p className="rounded-xl px-3 py-1 text-emerald-600 font-medium border border-neutral-200 text-sm flex items-center gap-2">
           <TriangleAlert className="w-4 h-4" />

@@ -11,6 +11,7 @@ import { IconDeviceFloppy } from '@tabler/icons-react'
 import { Switch } from '~/components/ui/switch'
 import { Field } from '~/components/ui/field'
 import { useToast } from '~/hooks/use_toast'
+import { CheckIcon } from 'lucide-react'
 
 interface Props {
   publication: Publication
@@ -31,7 +32,12 @@ export default function EditPost({ publication, post }: Props) {
     patch(`/publications/${publication.slug}/posts/${post.id}`, {
       onSuccess: () => {
         toast({
-          title: 'Post updated',
+          description: (
+            <div className="flex items-center gap-x-2">
+              <CheckIcon className="size-4 stroke-emerald-700" />
+              <p>Post updated!</p>
+            </div>
+          ),
         })
       },
     })

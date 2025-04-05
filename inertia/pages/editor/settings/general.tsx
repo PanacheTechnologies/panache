@@ -19,6 +19,8 @@ import Publication from '#models/publication'
 import useParams from '~/hooks/use_params'
 import { SettingsLayoutNav } from '~/components/settings_layout_nav'
 import { Field } from '~/components/ui/field'
+import { useToast } from '~/hooks/use_toast'
+import { CheckIcon } from 'lucide-react'
 
 export default function GeneralSettings({ publication }: { publication: Publication }) {
   const params = useParams()
@@ -26,9 +28,22 @@ export default function GeneralSettings({ publication }: { publication: Publicat
     title: publication.title,
   })
 
+  const { toast } = useToast()
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    form.patch(`/publications/${params.slug}`)
+    form.patch(`/publications/${params.slug}`, {
+      onSuccess: () => {
+        toast({
+          description: (
+            <div className="flex items-center gap-x-2">
+              <CheckIcon className="size-4 stroke-emerald-700" />
+              <p>Publication updated!</p>
+            </div>
+          ),
+        })
+      },
+    })
   }
 
   const handleDelete = () => {
@@ -52,19 +67,12 @@ export default function GeneralSettings({ publication }: { publication: Publicat
               <form onSubmit={handleSubmit} className="space-y-6">
                 <Field>
                   <Label htmlFor="domain">Domain</Label>
-                  <div className="flex items-center">
-                    <div className="flex w-full">
-                      <span className="flex font-medium items-center border-r-0 px-3 h-10 bg-neutral-50 text-neutral-600 rounded-sm rounded-r-none border border-neutral-300 text-sm">
-                        https://
-                      </span>
-                      <Input
-                        id="domain"
-                        value={publication.url}
-                        readOnly
-                        className="!w-full rounded-l-none bg-neutral-50 text-neutral-600 border-neutral-200 cursor-not-allowed pr-[42px]"
-                      />
-                    </div>
-                  </div>
+                  <Input
+                    id="domain"
+                    value={`https://panache.so${publication.url}`}
+                    readOnly
+                    className="!w-full bg-neutral-50 text-neutral-600 border-neutral-200 cursor-not-allowed pr-[42px]"
+                  />
                   <p className="text-sm text-neutral-600">This is your publication's URL.</p>
                 </Field>
 

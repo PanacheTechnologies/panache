@@ -30,6 +30,6 @@ export default class Publication extends AppBaseModel {
 
   @computed()
   get url() {
-    return router.makeUrl('/p/:slug', { slug: this.slug })
+    return router.makeUrl('listPosts', { slug: this.slug })
   }
 }

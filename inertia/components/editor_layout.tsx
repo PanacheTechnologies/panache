@@ -6,6 +6,7 @@ import PublicationsSelector from './publications_selector.js'
 import { cn } from '~/lib/utils'
 import { Logo } from './logo.js'
 import { Head } from '@inertiajs/react'
+import { Toaster } from './ui/toaster.js'
 
 export interface EditorLayoutProps extends React.PropsWithChildren {
   title?: string | React.ReactNode
@@ -26,6 +27,8 @@ const EditorLayout: React.FunctionComponent<EditorLayoutProps> = ({
       <Head>
         <title>{title}</title>
       </Head>
+
+      <Toaster />
 
       <main className="min-h-screen w-full border-t-10 border-emerald-600">
         <div className="-top-16 z-20 border-b border-zinc-200 bg-white">

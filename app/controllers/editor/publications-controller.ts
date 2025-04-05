@@ -148,8 +148,8 @@ export default class PublicationsController {
     /**
      * Redirect to publication directly, if domain type is not custom.
      */
-    return response.redirect().toRoute('editor.publications.index', {
-      domain: publication.slug,
+    return response.redirect().toRoute('editor.publications.show', {
+      slug: publication.slug,
     })
   }
 

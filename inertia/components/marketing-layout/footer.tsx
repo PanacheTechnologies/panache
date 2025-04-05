@@ -30,10 +30,10 @@ export function Footer() {
             </Link>
           </div>
           <div className="flex flex-wrap justify-end">
-            <p className="border border-neutral-200 rounded-lg px-2 py-1.5 text-sm text-neutral-900 flex items-center gap-2">
+            <div className="border border-neutral-200 rounded-lg px-2 py-1.5 text-sm text-neutral-900 flex items-center gap-2">
               <div className="w-3 h-3 bg-emerald-700 rounded-full"></div>
-              <span>All systems operational.</span>
-            </p>
+              <p>All systems operational.</p>
+            </div>
           </div>
           <p className="text-sm text-neutral-500">
             © 2025 Panache Technologies. All rights reserved.

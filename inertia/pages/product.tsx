@@ -25,7 +25,7 @@ export default function Product() {
           <Link className="btn btn-primary" href="/auth/sign-up">
             Start for free →
           </Link>
-          <a className="btn btn-secondary" href="https://github.com/panachetechnologies/panache.so">
+          <a className="btn btn-secondary" href="https://github.com/panachetechnologies/panache">
             Star on GitHub <GitHubIcon className="h-4 w-4" />
           </a>
         </div>

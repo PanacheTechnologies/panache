@@ -35,8 +35,6 @@ export default function GeneralSettings({ publication }: { publication: Publicat
     form.delete(`/publications/${publication.id}`)
   }
 
-  const publicationUrl = `${publication.slug}.panache.so`
-
   return (
     <EditorLayout title="General Settings">
       <div className="grid sm:grid-cols-4 lg:grid-cols-9 gap-x-8 py-8">
@@ -61,7 +59,7 @@ export default function GeneralSettings({ publication }: { publication: Publicat
                       </span>
                       <Input
                         id="domain"
-                        value={publicationUrl}
+                        value={publication.url}
                         readOnly
                         className="!w-full rounded-l-none bg-neutral-50 text-neutral-600 border-neutral-200 cursor-not-allowed pr-[42px]"
                       />

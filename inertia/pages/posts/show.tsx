@@ -23,10 +23,7 @@ export default function PostsShow({ publication, post }: { publication: Publicat
         <meta property="og:title" content={he.encode(post.title)} />
         <meta property="og:description" content={he.encode(post.summary)} />
         <meta property="og:type" content="article" />
-        <meta
-          property="og:url"
-          content={`https://${he.encode(publication.slug)}.panache.so/posts/${post.id}`}
-        />
+        <meta property="og:url" content={`${he.encode(publication.url)}/posts/${post.id}`} />
         <meta property="og:site_name" content={he.encode(publication.title)} />
         {post.imageUrl && <meta property="og:image" content={post.imageUrl} />}
 

@@ -42,13 +42,13 @@ export default function CreatePublicationForm() {
 
               <div className="flex">
                 <span className="flex font-medium items-center border-r-0 px-3 h-10 text-neutral-600 rounded-sm rounded-r-none border border-neutral-300 bg-background text-sm">
-                  https://
+                  https://panache.so/
                 </span>
                 <Input
                   id="slug"
                   name="slug"
                   type="text"
-                  className="rounded-l-none rounded-r-none"
+                  className="rounded-l-none"
                   placeholder="sandhillroadjournal"
                   required
                   value={form.data.slug}
@@ -56,9 +56,6 @@ export default function CreatePublicationForm() {
                     form.setData('slug', e.target.value.replaceAll(' ', '-').toLowerCase())
                   }}
                 />
-                <span className="flex font-medium items-center px-3 h-10 text-neutral-600 rounded-sm rounded-l-none border-l-0 border border-neutral-300 bg-background text-sm">
-                  .panache.so
-                </span>
               </div>
 
               <Error errorKey="slug" />

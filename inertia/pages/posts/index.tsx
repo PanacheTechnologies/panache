@@ -31,7 +31,7 @@ export default function PostsIndex({
         />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content={he.encode(publication.title)} />
-        <meta property="og:url" content={`https://${he.encode(publication.slug)}.panache.so`} />
+        <meta property="og:url" content={he.encode(publication.url)} />
       </Head>
       <main className="min-h-[calc(100vh-50px)] sm:min-h-[calc(100vh-50px)] max-w-2xl mx-auto px-4 sm:px-0 py-8 sm:py-16 space-y-8">
         <hgroup className="mx-auto flex flex-col items-center gap-1 w-full max-w-xl">

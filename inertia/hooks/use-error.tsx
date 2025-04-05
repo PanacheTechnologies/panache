@@ -2,7 +2,7 @@ import { usePageProps } from '~/hooks/use-page-props'
 
 export default function useError(id: string | undefined): string | undefined {
   const props = usePageProps()
-
+  console.log(props)
   if (!props.errors) {
     return undefined
   }

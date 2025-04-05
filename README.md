@@ -30,13 +30,13 @@ It can be regarded as an open-source alternative to Substack/Beehiiv.
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/panachetechnologies/panache.so
+git clone https://github.com/panachetechnologies/panache
 ```
 
 2. Change directory:
 
 ```bash
-cd panache.so
+cd panache
 ```
 
 3. Install dependencies:

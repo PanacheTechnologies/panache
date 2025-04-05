@@ -62,7 +62,7 @@ export default function SignInPage() {
               <Error errorKey="password" />
             </div>
 
-            <Error errorKey="auth" />
+            <Error errorKey="E_INVALID_CREDENTIALS" />
 
             <Button className="w-full" type="submit" loading={form.processing}>
               Sign in

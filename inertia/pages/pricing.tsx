@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { MarketingLayout } from '~/components/marketing-layout/marketing-layout'
 import { PricingCard } from '~/components/pricing-card'
 import { TriangleAlert } from 'lucide-react'
-
+import { useUser } from '~/hooks/use-user'
 interface SubscriberTier {
   limit: number
   price: number
@@ -53,6 +53,8 @@ export default function Pricing() {
 }
 
 function PricingTable({ selectedTier }: { selectedTier: SubscriberTier }) {
+  const user = useUser()
+
   return (
     <div className="mt-12 flex justify-center border-t border-neutral-200 -mx-2 bg-background">
       <div className="flex max-w-5xl w-full bg-background">
@@ -61,7 +63,7 @@ function PricingTable({ selectedTier }: { selectedTier: SubscriberTier }) {
           price="$0"
           ctaLabel="Start for free →"
           className="lg:border-r border-neutral-200"
-          href="/auth/sign-up"
+          href={user ? '/publications' : '/auth/sign-up'}
           features={[
             {
               text: 'Up to 1000 subscribers',
@@ -96,7 +98,7 @@ function PricingTable({ selectedTier }: { selectedTier: SubscriberTier }) {
           ctaLabel="Get started →"
           className="lg:border-r border-neutral-200"
           ctaStyle="primary"
-          href="/auth/sign-up"
+          href={user ? '/publications' : '/auth/sign-up'}
           features={[
             {
               text: `Up to ${selectedTier.limit.toLocaleString('en-US')} subscribers`,

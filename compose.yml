@@ -1,0 +1,34 @@
+services:
+  app:
+    image: alexisbouchez1/panache.so:latest
+    env_file: .env
+    volumes:
+      - sqlite_data:/app/tmp
+    ports:
+      - '127.0.0.1:3333:3333'
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+      - sqlite_data:/app/tmp:ro # Read-only access to SQLite data
+    depends_on:
+      - app
+    network_mode: host
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30 --cleanup
+    network_mode: host
+
+volumes:
+  caddy_data:
+  caddy_config:
+  sqlite_data: # Persistent volume for SQLite database

@@ -1,0 +1,4 @@
+panache.so, www.panache.so {
+    reverse_proxy localhost:3333
+    encode gzip
+}

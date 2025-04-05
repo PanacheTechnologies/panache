@@ -102,9 +102,7 @@ export default class PostsController {
 
     await post.delete()
 
-    return response.redirect().toRoute('editor.posts.index', {
-      domain: params.slug,
-    })
+    return response.redirect().back()
   }
 
   async publish({ auth, params, response }: HttpContext) {

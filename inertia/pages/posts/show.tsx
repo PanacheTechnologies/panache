@@ -39,7 +39,7 @@ export default function PostsShow({ publication, post }: { publication: Publicat
             <header>
               <div className="flex justify-center items-center mb-2">
                 <Link
-                  href="/"
+                  href={`/p/${publication.slug}`}
                   className="inline-flex items-center text-sm text-neutral-600 hover:text-neutral-900 transition-colors"
                 >
                   <IconArrowLeft className="size-4 mr-2" />

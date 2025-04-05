@@ -8,6 +8,7 @@ import { cn } from '~/lib/utils'
 import { IconArrowRight } from '@tabler/icons-react'
 import PublicationFooter from '~/components/publications/publication-footer'
 import { buttonVariants } from '~/components/ui/button'
+import usePageProps from '~/hooks/use_page_props'
 
 export default function PostsIndex({
   publication,
@@ -63,8 +64,13 @@ function PostsGrid({ posts }: { posts: Post[] }) {
 }
 
 function PostCard({ post }: { post: Post }) {
+  const { publication } = usePageProps<{ publication: Publication }>()
   return (
-    <Link className="hover:opacity-80 transition-opacity" key={post.id} href={`/posts/${post.id}`}>
+    <Link
+      className="hover:opacity-80 transition-opacity"
+      key={post.id}
+      href={`/p/${publication.slug}/posts/${post.id}`}
+    >
       <article className="flex flex-col items-start justify-between border p-5 rounded-lg">
         <div className="relative w-full">
           {post.imageUrl ? (
@@ -87,7 +93,9 @@ function PostCard({ post }: { post: Post }) {
               <time dateTime={post.date} className="text-neutral-500">
                 Published on {formatDate(new Date(post.date as unknown as string), 'MMMM d, yyyy')}
               </time>
-              <p>by {post.author.fullName}</p>
+              {post.author && post.author.fullName && (
+                <p className="text-sm text-neutral-700">by {he.encode(post.author.fullName)}</p>
+              )}
             </div>
 
             {post.summary ? (

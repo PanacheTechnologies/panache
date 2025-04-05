@@ -1,12 +1,14 @@
 import { Link } from '@inertiajs/react'
 import { NavLink } from './nav-link'
 import clsx from 'clsx'
+import { useUser } from '~/hooks/use-user'
 
 export interface HeaderProps {
   showBottomBorder?: boolean
 }
 
 export function Header({ showBottomBorder = false }: HeaderProps) {
+  const user = useUser()
   return (
     <div
       className={clsx(
@@ -22,12 +24,20 @@ export function Header({ showBottomBorder = false }: HeaderProps) {
         <NavLink href="/pricing">Pricing</NavLink>
       </nav>
       <div className="w-full flex flex-wrap justify-end items-center gap-4">
-        <Link className="btn btn-secondary" href="/auth/sign-in">
-          Sign in
-        </Link>
-        <Link className="btn btn-primary" href="/auth/sign-up">
-          Start for free →
-        </Link>
+        {user ? (
+          <Link className="btn btn-secondary" href="/publications">
+            Go to dashboard →
+          </Link>
+        ) : (
+          <>
+            <Link className="btn btn-secondary" href="/auth/sign-in">
+              Sign in
+            </Link>
+            <Link className="btn btn-primary" href="/auth/sign-up">
+              Start for free →
+            </Link>
+          </>
+        )}
       </div>
     </div>
   )

@@ -42,7 +42,7 @@ export default function CreatePublicationForm() {
 
               <div className="flex">
                 <span className="flex font-medium items-center border-r-0 px-3 h-10 text-neutral-600 rounded-sm rounded-r-none border border-neutral-300 bg-background text-sm">
-                  https://panache.so/
+                  https://panache.so/p/
                 </span>
                 <Input
                   id="slug"

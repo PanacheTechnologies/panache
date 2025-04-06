@@ -4,7 +4,7 @@ import CreatePublicationForm from '~/components/editor/create-publication-form'
 
 export default function CreatePublication() {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-orange-50 p-6 md:p-10">
+    <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-orange-50/50 p-6 md:p-10">
       <div className="flex w-full max-w-md flex-col gap-6">
         <div className="flex justify-center w-full">
           <Link

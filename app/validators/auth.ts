@@ -2,6 +2,7 @@ import vine from '@vinejs/vine'
 
 export const signUpValidator = vine.compile(
   vine.object({
+    fullName: vine.string().minLength(1).maxLength(255),
     email: vine.string().email().normalizeEmail().unique({ table: 'users', column: 'email' }),
     password: vine.string().minLength(8).maxLength(255),
   })

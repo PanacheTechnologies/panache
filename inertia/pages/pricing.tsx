@@ -3,6 +3,7 @@ import { MarketingLayout } from '~/components/marketing-layout/marketing-layout'
 import { PricingCard } from '~/components/pricing-card'
 import { TriangleAlert } from 'lucide-react'
 import { useUser } from '~/hooks/use-user'
+import { Head } from '@inertiajs/react'
 interface SubscriberTier {
   limit: number
   price: number
@@ -21,6 +22,13 @@ export default function Pricing() {
 
   return (
     <MarketingLayout>
+      <Head>
+        <title>Pricing</title>
+        <meta name="description" content="Choose the plan that's right for you." />
+
+        <meta property="og:title" content="Pricing" />
+        <meta property="og:description" content="Choose the plan that's right for you." />
+      </Head>
       <section className="flex flex-col items-center justify-center gap-4 max-w-md mx-auto">
         <p className="rounded-xl px-3 py-1 text-emerald-600 font-medium border border-neutral-200 text-sm flex items-center gap-2">
           <TriangleAlert className="w-4 h-4" />

@@ -7,7 +7,7 @@ export default function Product() {
   return (
     <MarketingLayout>
       <Head>
-        <title>Panache</title>
+        <title>Product</title>
         <meta
           name="description"
           content="An open-source newsletter platform, designed for creators."

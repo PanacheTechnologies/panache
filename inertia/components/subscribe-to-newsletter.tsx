@@ -40,7 +40,7 @@ export default function SubscribeToNewsletter({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    form.post('/subscribe', {
+    form.post(`/p/${publicationSlug}/subscribe`, {
       preserveState: true,
       onSuccess: () => {
         form.reset('email')

@@ -96,21 +96,42 @@ export default class GenerateExtracts extends BaseCommand {
   ): Promise<void> {
     const duration = end - start
 
-    // Simple, reliable ffmpeg command
-    const command = `ffmpeg -y -ss ${start} -i "${inputPath}" -t ${duration} \
-      -c:v libx264 -preset medium \
+    // More robust ffmpeg command with proper seeking and error handling
+    const command = `ffmpeg -y \
+      -ss ${start} \
+      -i "${inputPath}" \
+      -t ${duration} \
+      -c:v libx264 \
+      -preset medium \
       -c:a aac \
+      -avoid_negative_ts make_zero \
+      -fflags +genpts \
       "${outputPath}"`
 
     this.logger.info(`Generating extract from ${start}s to ${end}s...`)
 
     try {
       const { stdout, stderr } = await this.execAsync(command)
+
+      // Check if output file exists and has content
+      const stats = await fs.stat(outputPath)
+      if (stats.size === 0) {
+        throw new Error('Generated video file is empty')
+      }
+
       if (stderr) {
         this.logger.warning(`ffmpeg warnings: ${stderr}`)
       }
+
+      this.logger.success(`Successfully generated extract: ${outputPath}`)
     } catch (error) {
       this.logger.error(`Failed to generate extract: ${error}`)
+      // Clean up failed output file if it exists
+      try {
+        await fs.unlink(outputPath)
+      } catch (cleanupError) {
+        this.logger.warning(`Failed to clean up output file: ${cleanupError}`)
+      }
       throw new Error(`Failed to generate video extract: ${error}`)
     }
   }
@@ -140,45 +161,18 @@ export default class GenerateExtracts extends BaseCommand {
       model: anthropic('claude-3-5-sonnet-latest'),
       maxRetries: 10,
       tools: {
-        analyzeTranscript: {
-          description: 'Analyze podcast transcript and identify key moments',
+        checkDuration: {
+          description: 'Check if the duration of the key moment is around 3 minutes',
           parameters: z.object({
-            start: z.number().describe('Start time in seconds'),
-            end: z.number().describe('End time in seconds'),
-            description: z.string().describe('Description of the key moment'),
+            duration: z.number(),
           }),
-          execute: async ({ start, end, description }) => {
-            // Validate the duration to be around 3 minutes (180 seconds)
-            const duration = end - start
-            const targetDuration = 180 // 3 minutes in seconds
-            const tolerance = 45 // 45 seconds tolerance (2.25-3.75 minutes)
-
-            if (Math.abs(duration - targetDuration) > tolerance) {
+          execute: async ({ duration }) => {
+            if (duration < 180 - 45 || duration > 180 + 45) {
               return {
-                error: `Invalid duration: ${duration}s. Must be between 135 and 225 seconds (ideally around 180 seconds).`,
+                error: `Invalid duration: ${duration}s. Must be between 135 and 225 seconds.`,
               }
             }
-
-            // Check if the description contains presenter/host related content
-            const presenterKeywords = ['host', 'presenter', 'interviewer', 'moderator', 'speaker']
-            const isPresenterContent = presenterKeywords.some((keyword) =>
-              description.toLowerCase().includes(keyword)
-            )
-
-            if (isPresenterContent) {
-              return {
-                error:
-                  'Key moment appears to be about the presenter/host. Please focus on guest content only.',
-              }
-            }
-
-            // Return the validated key moment
-            return {
-              start,
-              end,
-              description,
-              duration, // Include duration in response for logging
-            }
+            return { duration }
           },
         },
       },
@@ -254,21 +248,43 @@ export default class GenerateExtracts extends BaseCommand {
 
     // Validate and adjust key moments
     const validatedKeyMoments = object.keyMoments.map((moment) => {
-      // Find closest utterance boundaries
-      const startUtterance = utterances.find((u) => Math.abs(u.start - moment.start) < 1)
-      const endUtterance = utterances.find((u) => Math.abs(u.end - moment.end) < 1)
+      // Find closest utterance boundaries with more precise matching
+      const startUtterance = utterances.find((u) => Math.abs(u.start - moment.start) < 0.5)
+      const endUtterance = utterances.find((u) => Math.abs(u.end - moment.end) < 0.5)
+
+      if (!startUtterance || !endUtterance) {
+        this.logger.warning(
+          `Could not find exact utterance boundaries for moment: ${moment.start}s - ${moment.end}s`
+        )
+      }
+
+      const validatedStart = startUtterance?.start ?? moment.start
+      const validatedEnd = endUtterance?.end ?? moment.end
+      const duration = validatedEnd - validatedStart
+
+      // Log validation details
+      this.logger.info(`Validating moment: ${moment.start}s - ${moment.end}s (${duration}s)`)
 
       return {
         ...moment,
-        start: startUtterance?.start ?? moment.start,
-        end: endUtterance?.end ?? moment.end,
+        start: validatedStart,
+        end: validatedEnd,
       }
     })
 
-    // Sort moments chronologically
+    // Sort moments chronologically and ensure no overlaps
     validatedKeyMoments.sort((a, b) => a.start - b.start)
 
-    // Log validation results
+    // Check for overlaps
+    for (let i = 1; i < validatedKeyMoments.length; i++) {
+      if (validatedKeyMoments[i].start < validatedKeyMoments[i - 1].end) {
+        this.logger.warning(
+          `Overlapping moments detected: ${validatedKeyMoments[i - 1].start}s-${validatedKeyMoments[i - 1].end}s and ${validatedKeyMoments[i].start}s-${validatedKeyMoments[i].end}s`
+        )
+      }
+    }
+
+    // Log final validation results
     validatedKeyMoments.forEach((moment, index) => {
       const duration = moment.end - moment.start
       this.logger.info(`Key moment ${index + 1}: ${duration}s (${moment.start}s - ${moment.end}s)`)
